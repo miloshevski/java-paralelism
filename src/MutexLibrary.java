@@ -12,19 +12,26 @@ public class MutexLibrary {
     }
 
     public  void returnBook(String book) throws InterruptedException {
-        lock.lock();
-        while (books.size() < capacity){
-            books.add(book);
+        while (true){
+            lock.lock();
+            if (books.size() < capacity){
+                books.add(book);
+                lock.unlock();
+                break;
+            }
             lock.unlock();
         }
-
     }
 
     public String borrowBook() throws InterruptedException {
         String book = "";
         lock.lock();
-        while (!books.isEmpty()){
-            book = books.getFirst();
+        while (true){
+            if (!books.isEmpty()){
+                book = books.getFirst();
+                lock.unlock();
+                break;
+            }
             lock.unlock();
         }
         return book;
