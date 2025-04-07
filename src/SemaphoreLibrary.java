@@ -28,10 +28,11 @@ public class SemaphoreLibrary {
     public String borrowBook() throws InterruptedException {
         borrowBookSemaphore.acquire();
         String book = "";
-        coordinator.acui
-        // -23:17
-
-
+        coordinator.acquire();
+        while (books.size() == 0){
+            Thread.sleep(1000);
+        }
+        book=books.remove(0);
         return book;
     }
 }
